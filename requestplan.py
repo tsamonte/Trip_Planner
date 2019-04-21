@@ -6,13 +6,13 @@ their primary web browser along with a map of their travel plan.
 """
 
 from geopy.geocoders import Nominatim
-
+from mapwriter import *
 import tkinter
-import mapwriter
 import generatePlan
 
 
 
+firstaddy = ''
 
 ### CLASSES ###
 
@@ -22,8 +22,8 @@ class DontTripUI:
     '''
     
     def __init__(self):
-        print('Requesting travel information')
-
+        #print('Requesting travel information')
+        self._destination = ''
         # main menu window
         self._main_menu = tkinter.Tk()
         self._main_menu.title("Don't Trip!")
@@ -40,16 +40,16 @@ class DontTripUI:
         self._main_menu.rowconfigure(0, weight=1)
         self._main_menu.columnconfigure(0, weight=1)
 
-        # options
-        #self._destination_entry = self._generate_option(1,
-         #       self._main_menu, 'Destination (address)')
 
-        self._city_entry = self._generate_option(1,
+        '''self._city_entry = self._generate_option(1,
                 self._main_menu, 'City')
         self._state_entry = self._generate_option(2,
                 self._main_menu, 'State')
         self._zipcode_entry = self._generate_option(3,
-                self._main_menu, 'Zipcode*')
+                self._main_menu, 'Zipcode*')'''
+
+        self._destination_entry = self._generate_option(1,
+                self._main_menu, 'Address (City, State (full name), Zipcode*)')
 
         # launch the webpage
         title = tkinter.Label(
@@ -99,18 +99,19 @@ class DontTripUI:
         '''
         Launches the plan query into the web browser
         '''
-        city = self._city_entry.get()
+        '''city = self._city_entry.get()
         state = self._state_entry.get()
-        zipcode = self._zipcode_entry.get()
+        zipcode = self._zipcode_entry.get()'''
        
-        destination = str(city+', '+state+', '+zipcode)
-        generatePlan.generatePlan(destination)
+        self._destination = self._destination_entry.get()
+
+        generatePlan.generatePlan(self._destination)
         # print(destination)
         #destination = self._destination_entry.get()
         
         try:
             geolocator = Nominatim(user_agent="Dont Trip!")
-            location = geolocator.geocode(destination)
+            location = geolocator.geocode(self._destination)
             #print("Type: " + str(type(location)))
             if (location == None):
                 raise InvalidDestinationError
@@ -120,7 +121,7 @@ class DontTripUI:
 
             error_message = tkinter.Label(
                 master = self._error_window,
-                text = 'Please enter a valid city and state.',
+                text = 'Please enter a valid city, full state name, and zipcode* (optional).',
                 font = ('Impact', 15))
 
             error_message.grid(
@@ -131,10 +132,11 @@ class DontTripUI:
             self._error_window.wait_window()
             return
         else:
-            result = mapwriter.newScript(location.latitude, location.longitude)
+            writeToFile(self._destination,"firstaddy.txt")
+            result = newScript(location.latitude, location.longitude)
             #print(location.latitude, location.longitude)
-            mapwriter.writeToFile(result, "travel.html")
-            mapwriter.openHTMLInBrowser("travel.html")
+            writeToFile(result, "travel.html")
+            openHTMLInBrowser("travel.html")
         
     def run(self) -> None:
         '''
