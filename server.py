@@ -6,8 +6,7 @@ app = Flask(__name__)
 
 @app.route('/getData', methods = ['GET'])
 def sendMessage():
-    data = generatePlan.generatePlan("7707 Aldea Ave, Van Nuys, CA")
-    print(data)
+    data = generatePlan.generatePlan("Irvine, CA 92697")
     return json.dumps(data)
 
 @app.route('/testData')

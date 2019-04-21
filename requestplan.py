@@ -109,7 +109,7 @@ class DontTripUI:
         #destination = self._destination_entry.get()
         
         try:
-            geolocator = Nominatim(user_agent="Don\'t Trip!")
+            geolocator = Nominatim(user_agent="Dont Trip!")
             location = geolocator.geocode(destination)
             #print("Type: " + str(type(location)))
             if (location == None):

@@ -10,6 +10,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
   <body>
+    <script>test();</script>
     <div class = "wrap">
         <div id="map">
         <script>
@@ -17,7 +18,6 @@
             var y =-118.2427669;
             var map = initMap(x,y);
             var markerArray = [];
-            document.write('hello');
         </script>
         </div>
         <div id="right">
@@ -26,7 +26,7 @@
             </div>
         <p>Where we droppin?</p>
         <div class = "container">
-            <select id="dropdown" onchange="deleteMarkers(map, markerArray);addMarker(map, markerArray); test(); printData()">
+            <select id="dropdown" onchange="deleteMarkers(map, markerArray);addMarker(map, markerArray);">
                 <option>Choose a City</option>
             </select>
             <script>

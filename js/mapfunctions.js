@@ -14,6 +14,8 @@ function initMap(x,y) {
 var markerArray = []; // keeps track of all active markers, helps for deletion
 var startLngLat = [];
 var endLngLat = [];
+var startingAddress = [];
+var endingAddress = [];
 
 function addMarker(mainMap, mArray){
     var element = document.getElementById('dropdown');
@@ -26,14 +28,22 @@ function addMarker(mainMap, mArray){
         position: myLatLng,
         map: mainMap
     });
-    for(var i = 0; i < startLngLat.length; i++)
+    for(var i = 1; i < startLngLat.length; i++)
     {
-        split_value = startLngLat[i].split(',');
-        var LatLng = {lat: parseFloat(split_value[0]), lng: parseFloat(split_value[1])};
+        start = startLngLat[i];
+        split_value = start.split(',');
+        var newLatLng = {lat: parseFloat(split_value[0]), lng: parseFloat(split_value[1])};
         var marker = new google.maps.Marker({
-            position: LatLng,
+            position: newLatLng,
             map: mainMap
         });
+    }
+    if(startLngLat.length > 0)
+    {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay =  new google.maps.DirectionsRenderer;
+        directionsDisplay.setMap(mainMap);
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
     }
     map.panTo(myLatLng)
     markerArray.push(marker);
@@ -95,7 +105,24 @@ function test2(data){
     {
         startLngLat.push(data[0]['legs'][i]['start']['latLong']);
         endLngLat.push(data[0]['legs'][i]['end']['latLong']);
+        startingAddress.push(data[0]['legs'][i]['start']['address']);
+        endingAddress.push(data[0]['legs'][i]['end']['address']);
     }
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay){
+    directionsService.route({
+        origin: startingAddress[0],
+        destination: endingAddress[endingAddress.length - 1],
+        travelMode: 'DRIVING'
+    }, function(response, status){
+            if(status == 'OK')
+            {
+                console.log(response);
+                directionsDisplay.setDirections(response);
+            }
+            else window.alert('Direction request failed due to ' + status);
+    });
 }
 
 function printData(){
@@ -103,5 +130,8 @@ function printData(){
     {
         console.log(startLngLat[i]);
         console.log(endLngLat[i]);
+        console.log(startingAddress[i]);
+        console.log(endingAddress[i]);
     }
+    console.log(startLngLat.length)
 }

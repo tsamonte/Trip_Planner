@@ -21,7 +21,6 @@ def generatePlan(area: str):
     initialPlace = getPlaces.getInitialPlace(gmaps, place)
     placeDict[initialPlace[0]] = initialPlace[1]
     placeNames.append(initialPlace[0])
-    print("hi1")
     # print(initialPlace)
 
     nextPlace = initialPlace
@@ -38,7 +37,6 @@ def generatePlan(area: str):
         placeDict[nextPlace[0]] = nextPlace[1]
         placeNames.append(nextPlace[0])
         # print(nextPlace)
-        print("hi2")
 
     for i in range(len(placeNames) - 1):
         matrix = getDirections.getDistanceMatrix(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
@@ -61,7 +59,6 @@ def generatePlan(area: str):
         end['latLong'] = placeDict[placeNames[i+1]]
         addDict['trip_duration'] = matrix['rows'][0]['elements'][0]['duration']['text']
         addDict['trip_distance'] = matrix['rows'][0]['elements'][0]['distance']['text']
-        print("hi3")
 
         directions = getDirections.getDirections(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
         addDict['steps'] = []
