@@ -25,14 +25,14 @@ def newScript(x,y) -> str:
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   </head>
   <body>
+    <script>test();</script>
     <div class = "wrap">
         <div id="map">
         <script>
-            var x ='''+ str(x) + ''';
-            var y ='''+ str(y) + ''';
+            var x =''' + str(x) + ''';
+            var y =''' + str(y) + ''';
             var map = initMap(x,y);
             var markerArray = [];
-            document.write('hello');
         </script>
         </div>
         <div id="right">
@@ -41,7 +41,7 @@ def newScript(x,y) -> str:
             </div>
         <p>Where we droppin?</p>
         <div class = "container">
-            <select id="dropdown" onchange="deleteMarkers(map, markerArray);addMarker(map, markerArray)">
+            <select id="dropdown" onchange="deleteMarkers(map, markerArray);addMarker(map, markerArray);">
                 <option>Choose a City</option>
             </select>
             <script>
