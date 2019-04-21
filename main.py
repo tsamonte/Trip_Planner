@@ -11,8 +11,9 @@ def main():
     # place = input("Please input your destination: ")
     # start = input("Please input your starting time: ")
     place = "7707 Aldea Ave, Van Nuys, CA"
-    # start = "10:00"
-    # time = start.split(':') # time[0] = hr; time[1] = min
+
+    returnDict = {}
+    returnDict['legs'] = []
 
     placeDict = {}
     placeNames = [] # needed to keep order of destinations
@@ -44,15 +45,31 @@ def main():
                                                               matrix['rows'][0]['elements'][0]['duration']['text'],
                                                               matrix['rows'][0]['elements'][0]['distance']['text'])
         print(strVal)
+        addDict = {}
+        addDict['start'] = {}
+        addDict['start']['name'] = placeNames[i]
+        addDict['start']['address'] = matrix['origin_addresses'][0]
+        addDict['end'] = {}
+        addDict['end']['name'] = placeNames[i+1]
+        addDict['end']['address'] = matrix['destination_addresses'][0]
+        addDict['trip_duration'] = matrix['rows'][0]['elements'][0]['duration']['text']
+        addDict['trip_distance'] = matrix['rows'][0]['elements'][0]['distance']['text']
 
         directions = getDirections.getDirections(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
         # print(directions[0]['legs'][0].keys())
+        addDict['steps'] = []
         for direction in directions[0]['legs'][0]['steps']:
             dirString = "{}\n{}".format(direction['html_instructions'], direction['distance']['text'])
             print(dirString)
+            addDict['steps'].append(dirString)
         print()
 
+        returnDict['legs'].append(addDict)
+
     print('Map data ©2019 Google')
+    returnDict['copyrights'] = 'Map data ©2019 Google'
+    print([returnDict])
+    return [returnDict]
 
 
 if __name__ == "__main__":
