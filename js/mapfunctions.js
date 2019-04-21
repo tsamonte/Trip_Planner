@@ -70,13 +70,19 @@ function dropDownList(){
 function test()
 {
     $.ajax({
-        type: "POST",
-        url: '/getData',
-        data: data,
-        success: test2(result)
+        type: "GET",
+        url: 'http://localhost:5000/getData',
+        dataType: 'json',
+        success: test2,
+        error: function() {
+            alert('error');
+        }
     });
 }
 
 function test2(data){
-    alert(data);
+    for(var i = 0;i < data.length; i++)
+    {
+        console.log(data[i]);
+    }
 }
