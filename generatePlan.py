@@ -1,7 +1,7 @@
 import googlemaps
 import getPlaces # getPlaces.py
 import getDirections # getDirections.py
-import formatJson
+# import formatJson
 
 def generatePlan(area: str):
     # keyFile = open('googlemapsKey.txt', 'r')
@@ -11,7 +11,6 @@ def generatePlan(area: str):
     gmaps = googlemaps.Client(key='AIzaSyA4j2DBPo0Lkk0q1p8zIjGF4PFdTImfCFI')
 
     place = area
-    # place = "7707 Aldea Ave, Van Nuys, CA"
 
     returnDict = {}
     returnDict['legs'] = []
@@ -41,19 +40,21 @@ def generatePlan(area: str):
 
     for i in range(len(placeNames) - 1):
         matrix = getDirections.getDistanceMatrix(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
-        strVal = "From: {} ({})\nTo: {} ({})\n\t<small>{} ({})</small>\n".format(
-            placeNames[i], matrix['origin_addresses'][0],
-            placeNames[i+1], matrix['destination_addresses'][0],
-            matrix['rows'][0]['elements'][0]['duration']['text'],
-            matrix['rows'][0]['elements'][0]['distance']['text'])
-        # print(strVal)
+        # strVal = "From: {} ({})\nTo: {} ({})\n\t<small>{} ({})</small>\n".format(
+        #     placeNames[i], matrix['origin_addresses'][0],
+        #     placeNames[i+1], matrix['destination_addresses'][0],
+        #     matrix['rows'][0]['elements'][0]['duration']['text'],
+        #     matrix['rows'][0]['elements'][0]['distance']['text'])
+        # # print(strVal)
         addDict = {}
         addDict['start'] = {}
         addDict['start']['name'] = placeNames[i]
         addDict['start']['address'] = matrix['origin_addresses'][0]
+        addDict['start']['latLong'] = placeDict[placeNames[i]]
         addDict['end'] = {}
         addDict['end']['name'] = placeNames[i+1]
         addDict['end']['address'] = matrix['destination_addresses'][0]
+        addDict['end']['latLong'] = placeDict[placeNames[i+1]]
         addDict['trip_duration'] = matrix['rows'][0]['elements'][0]['duration']['text']
         addDict['trip_distance'] = matrix['rows'][0]['elements'][0]['distance']['text']
 
@@ -69,11 +70,12 @@ def generatePlan(area: str):
 
     # print('Map data ©2019 Google')
     returnDict['copyrights'] = 'Map data ©2019 Google'
-    print(formatJson.formatJSON(returnDict))
+    # print(formatJson.formatJSON(returnDict))
+    print(returnDict)
     return [returnDict]
 
 if __name__ == "__main__":
-    main('')
+    generatePlan('')
 
 
 
