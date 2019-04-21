@@ -1,6 +1,8 @@
 import googlemaps
-import getPlaces
-import getDirections
+import getPlaces # getPlaces.py
+import getDirections # getDirections.py
+import formatJson
+
 
 def main():
     keyFile = open('googlemapsKey.txt', 'r')
@@ -19,9 +21,11 @@ def main():
     placeNames = [] # needed to keep order of destinations
 
     initialPlace = getPlaces.getInitialPlace(gmaps, place)
-    placeDict[initialPlace[0]] = initialPlace[2]
+    placeDict[initialPlace[0]] = initialPlace[1]
     placeNames.append(initialPlace[0])
     print(initialPlace)
+    # idk = populartimes.get(key, initialPlace[4], initialPlace[3], initialPlace[2])
+    # print(idk)
 
     nextPlace = initialPlace
 
@@ -33,17 +37,18 @@ def main():
             keyword = 'tourist attractions'
             type = None
 
-        nextPlace = getPlaces.getNearPlace(gmaps, nextPlace[2], keyword, type, placeNames)
-        placeDict[nextPlace[0]] = nextPlace[2]
+        nextPlace = getPlaces.getNearPlace(gmaps, nextPlace[1], keyword, type, placeNames)
+        placeDict[nextPlace[0]] = nextPlace[1]
         placeNames.append(nextPlace[0])
         print(nextPlace)
 
     for i in range(len(placeNames) - 1):
         matrix = getDirections.getDistanceMatrix(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
-        strVal = "From: {} ({})\nTo: {} ({})\n{} ({})\n".format(placeNames[i], matrix['origin_addresses'][0],
-                                                              placeNames[i+1], matrix['destination_addresses'][0],
-                                                              matrix['rows'][0]['elements'][0]['duration']['text'],
-                                                              matrix['rows'][0]['elements'][0]['distance']['text'])
+        strVal = "From: {} ({})\nTo: {} ({})\n\t<small>{} ({})</small>\n".format(
+            placeNames[i], matrix['origin_addresses'][0],
+            placeNames[i+1], matrix['destination_addresses'][0],
+            matrix['rows'][0]['elements'][0]['duration']['text'],
+            matrix['rows'][0]['elements'][0]['distance']['text'])
         print(strVal)
         addDict = {}
         addDict['start'] = {}
@@ -56,10 +61,9 @@ def main():
         addDict['trip_distance'] = matrix['rows'][0]['elements'][0]['distance']['text']
 
         directions = getDirections.getDirections(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
-        # print(directions[0]['legs'][0].keys())
         addDict['steps'] = []
         for direction in directions[0]['legs'][0]['steps']:
-            dirString = "{}\n{}".format(direction['html_instructions'], direction['distance']['text'])
+            dirString = "{} ({})".format(direction['html_instructions'], direction['distance']['text'])
             print(dirString)
             addDict['steps'].append(dirString)
         print()
@@ -68,7 +72,7 @@ def main():
 
     print('Map data ©2019 Google')
     returnDict['copyrights'] = 'Map data ©2019 Google'
-    print([returnDict])
+    print(formatJson.formatJSON(returnDict))
     return [returnDict]
 
 
