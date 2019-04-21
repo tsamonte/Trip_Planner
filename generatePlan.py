@@ -1,16 +1,20 @@
 import googlemaps
 import getPlaces # getPlaces.py
 import getDirections # getDirections.py
-# import formatJson
+import json
 
-def generatePlan(area: str):
+
+
+def generatePlan(): #area: str):
     # keyFile = open('googlemapsKey.txt', 'r')
     # key = keyFile.read()
     # keyFile.close()
 
     gmaps = googlemaps.Client(key='AIzaSyA4j2DBPo0Lkk0q1p8zIjGF4PFdTImfCFI')
 
-    place = area
+
+    place = input("Please enter a location (i.e. address, city, etc.): ")
+    # place = area
 
     returnDict = {}
     returnDict['legs'] = []
@@ -38,14 +42,18 @@ def generatePlan(area: str):
         placeNames.append(nextPlace[0])
         # print(nextPlace)
 
+    print("Your itinerary for today: ")
+    for place in placeNames:
+        print(place)
+    print()
     for i in range(len(placeNames) - 1):
         matrix = getDirections.getDistanceMatrix(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
-        # strVal = "From: {} ({})\nTo: {} ({})\n\t<small>{} ({})</small>\n".format(
-        #     placeNames[i], matrix['origin_addresses'][0],
-        #     placeNames[i+1], matrix['destination_addresses'][0],
-        #     matrix['rows'][0]['elements'][0]['duration']['text'],
-        #     matrix['rows'][0]['elements'][0]['distance']['text'])
-        # # print(strVal)
+        strVal = "From: {} ({})\nTo: {} ({})\n{} ({})\n".format(
+            placeNames[i], matrix['origin_addresses'][0],
+            placeNames[i+1], matrix['destination_addresses'][0],
+            matrix['rows'][0]['elements'][0]['duration']['text'],
+            matrix['rows'][0]['elements'][0]['distance']['text'])
+        print(strVal)
         addDict = {}
         addDict['start'] = {}
         start = addDict['start']
@@ -63,21 +71,24 @@ def generatePlan(area: str):
         directions = getDirections.getDirections(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
         addDict['steps'] = []
         for direction in directions[0]['legs'][0]['steps']:
-            dirString = "{} ({})".format(direction['html_instructions'], direction['distance']['text'])
-            # print(dirString)
+            plainTextDirections = getDirections.removeTags(direction['html_instructions'])
+            dirString = "\t{} ({})".format(plainTextDirections, direction['distance']['text'])
+            print(dirString)
             addDict['steps'].append(dirString)
-        # print()
+        print()
 
         returnDict['legs'].append(addDict)
 
-    # print('Map data ©2019 Google')
+    print('Map data ©2019 Google')
     returnDict['copyrights'] = 'Map data ©2019 Google'
     # print(formatJson.formatJSON(returnDict))
-    print(returnDict)
+    # print(returnDict)
+    with open('data.json', 'w') as fd:
+        json.dump(returnDict, fd, indent=4)
     return [returnDict]
 
 if __name__ == "__main__":
-    generatePlan('')
+    generatePlan()
 
 
 
