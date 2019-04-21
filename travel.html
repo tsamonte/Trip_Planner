@@ -12,10 +12,12 @@
   <body>
     <div class = "wrap">
         <div id="map">
-        <script> 
-            var x = 33.6857;
-            var y = -117.8259;
+        <script>
+            var x =34.0536834;
+            var y =-118.2427669;
             var map = initMap(x,y);
+            var markerArray = [];
+            document.write('hello');
         </script>
         </div>
         <div id="right">
@@ -24,7 +26,7 @@
             </div>
         <p>Where we droppin?</p>
         <div class = "container">
-            <select id="dropdown" onchange="addMarker(map)">
+            <select id="dropdown" onchange="deleteMarkers(map, markerArray);addMarker(map, markerArray)">
                 <option>Choose a City</option>
             </select>
             <script>
