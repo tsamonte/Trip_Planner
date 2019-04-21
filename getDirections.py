@@ -42,3 +42,11 @@ def getDirections(gmaps: 'googlemaps Client', origin: 'latLong', destination: 'l
                                   mode = 'driving',
                                   units = 'imperial')
     return directions
+
+def removeTags(input: str):
+    i1 = input.find("<")
+    if i1 == -1:
+        return input
+
+    i2 = input.find(">")
+    return removeTags(input[0:i1] + input[i2+1:])
