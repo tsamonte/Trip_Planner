@@ -30,7 +30,9 @@ def getInitialPlace(gmaps: 'gmapsClient', readableAddress: str):
             i += 1
 
     placeLatLong = str(place["geometry"]["location"]["lat"]) + "," + str(place["geometry"]["location"]["lng"])
-    return [place["name"], place["formatted_address"], placeLatLong, place["rating"]]
+    # neLatLong = str(place["geometry"]["viewport"]["northeast"]["lat"]) + "," + str(place["geometry"]["viewport"]["northeast"]["lng"])
+    # swLatLong = str(place["geometry"]["viewport"]["southwest"]["lat"]) + "," + str(place["geometry"]["viewport"]["southwest"]["lng"])
+    return [place["name"], placeLatLong] #, neLatLong, swLatLong, place["types"]]
 
 
 def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 'googlemaps type', placeNames: list):
@@ -70,7 +72,9 @@ def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 
             isSatisfactory = True
 
     placeLatLong = str(nextPlace["geometry"]["location"]["lat"]) + "," + str(nextPlace["geometry"]["location"]["lng"])
-    return [nextPlace["name"], nextPlace["vicinity"], placeLatLong, nextPlace["rating"]]
+    # neLatLong = str(nextPlace["geometry"]["viewport"]["northeast"]["lat"]) + "," + str(nextPlace["geometry"]["viewport"]["northeast"]["lng"])
+    # swLatLong = str(nextPlace["geometry"]["viewport"]["southwest"]["lat"]) + "," + str(nextPlace["geometry"]["viewport"]["southwest"]["lng"])
+    return [nextPlace["name"], placeLatLong] #, neLatLong, swLatLong, nextPlace["types"]]
 
 
 
