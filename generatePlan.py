@@ -3,16 +3,15 @@ import getPlaces # getPlaces.py
 import getDirections # getDirections.py
 import formatJson
 
-
-def main():
-    keyFile = open('googlemapsKey.txt', 'r')
-    key = keyFile.read()
-    keyFile.close()
+def generatePlan(area: str):
+    # keyFile = open('googlemapsKey.txt', 'r')
+    # key = keyFile.read()
+    # keyFile.close()
 
     gmaps = googlemaps.Client(key='AIzaSyA4j2DBPo0Lkk0q1p8zIjGF4PFdTImfCFI')
-    # place = input("Please input your destination: ")
-    # start = input("Please input your starting time: ")
-    place = "7707 Aldea Ave, Van Nuys, CA"
+
+    place = area
+    # place = "7707 Aldea Ave, Van Nuys, CA"
 
     returnDict = {}
     returnDict['legs'] = []
@@ -23,9 +22,7 @@ def main():
     initialPlace = getPlaces.getInitialPlace(gmaps, place)
     placeDict[initialPlace[0]] = initialPlace[1]
     placeNames.append(initialPlace[0])
-    print(initialPlace)
-    # idk = populartimes.get(key, initialPlace[4], initialPlace[3], initialPlace[2])
-    # print(idk)
+    # print(initialPlace)
 
     nextPlace = initialPlace
 
@@ -40,7 +37,7 @@ def main():
         nextPlace = getPlaces.getNearPlace(gmaps, nextPlace[1], keyword, type, placeNames)
         placeDict[nextPlace[0]] = nextPlace[1]
         placeNames.append(nextPlace[0])
-        print(nextPlace)
+        # print(nextPlace)
 
     for i in range(len(placeNames) - 1):
         matrix = getDirections.getDistanceMatrix(gmaps, placeDict[placeNames[i]], placeDict[placeNames[i+1]])
@@ -49,7 +46,7 @@ def main():
             placeNames[i+1], matrix['destination_addresses'][0],
             matrix['rows'][0]['elements'][0]['duration']['text'],
             matrix['rows'][0]['elements'][0]['distance']['text'])
-        print(strVal)
+        # print(strVal)
         addDict = {}
         addDict['start'] = {}
         addDict['start']['name'] = placeNames[i]
@@ -64,16 +61,19 @@ def main():
         addDict['steps'] = []
         for direction in directions[0]['legs'][0]['steps']:
             dirString = "{} ({})".format(direction['html_instructions'], direction['distance']['text'])
-            print(dirString)
+            # print(dirString)
             addDict['steps'].append(dirString)
-        print()
+        # print()
 
         returnDict['legs'].append(addDict)
 
-    print('Map data ©2019 Google')
+    # print('Map data ©2019 Google')
     returnDict['copyrights'] = 'Map data ©2019 Google'
     print(formatJson.formatJSON(returnDict))
     return [returnDict]
+
+if __name__ == "__main__":
+    main('')
 
 
 
