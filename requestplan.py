@@ -102,7 +102,7 @@ class DontTripUI:
         state = self._state_entry.get()
         zipcode = self._zipcode_entry.get()
        
-        destination = str(city+' '+state+' '+zipcode)
+        destination = str(city+', '+state+', '+zipcode)
         print(destination)
         #destination = self._destination_entry.get()
         
