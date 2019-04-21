@@ -5,7 +5,7 @@ import json
 
 
 
-def generatePlan(): #area: str):
+def generatePlan(area: str): #area: str):
     # keyFile = open('googlemapsKey.txt', 'r')
     # key = keyFile.read()
     # keyFile.close()
@@ -88,7 +88,7 @@ def generatePlan(): #area: str):
     return [returnDict]
 
 if __name__ == "__main__":
-    generatePlan()
+    generatePlan("")
 
 
 
