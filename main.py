@@ -24,8 +24,6 @@ def main():
     placeDict[initialPlace[0]] = initialPlace[1]
     placeNames.append(initialPlace[0])
     print(initialPlace)
-    # idk = populartimes.get(key, initialPlace[4], initialPlace[3], initialPlace[2])
-    # print(idk)
 
     nextPlace = initialPlace
 
