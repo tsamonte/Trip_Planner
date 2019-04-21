@@ -28,16 +28,6 @@ function addMarker(mainMap, mArray){
         position: myLatLng,
         map: mainMap
     });
-    for(var i = 1; i < startLngLat.length; i++)
-    {
-        start = startLngLat[i];
-        split_value = start.split(',');
-        var newLatLng = {lat: parseFloat(split_value[0]), lng: parseFloat(split_value[1])};
-        var marker = new google.maps.Marker({
-            position: newLatLng,
-            map: mainMap
-        });
-    }
     if(startLngLat.length > 0)
     {
         var directionsService = new google.maps.DirectionsService;
@@ -111,9 +101,16 @@ function test2(data){
 }
 
 function calculateAndDisplayRoute(directionsService, directionsDisplay){
+    var waypts = [];
+    for(var i = 0; i < startingAddress.length; i++)
+    {
+        waypts.push({location: startingAddress[i], stopover: true});
+    }
     directionsService.route({
         origin: startingAddress[0],
         destination: endingAddress[endingAddress.length - 1],
+        waypoints: waypts,
+        optimizeWaypoints: true,
         travelMode: 'DRIVING'
     }, function(response, status){
             if(status == 'OK')
