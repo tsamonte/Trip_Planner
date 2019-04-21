@@ -9,7 +9,7 @@ def main():
     key = keyFile.read()
     keyFile.close()
 
-    gmaps = googlemaps.Client(key=key)
+    gmaps = googlemaps.Client(key='AIzaSyA4j2DBPo0Lkk0q1p8zIjGF4PFdTImfCFI')
     # place = input("Please input your destination: ")
     # start = input("Please input your starting time: ")
     place = "7707 Aldea Ave, Van Nuys, CA"
@@ -24,6 +24,8 @@ def main():
     placeDict[initialPlace[0]] = initialPlace[1]
     placeNames.append(initialPlace[0])
     print(initialPlace)
+    # idk = populartimes.get(key, initialPlace[4], initialPlace[3], initialPlace[2])
+    # print(idk)
 
     nextPlace = initialPlace
 
@@ -73,8 +75,5 @@ def main():
     print(formatJson.formatJSON(returnDict))
     return [returnDict]
 
-
-if __name__ == "__main__":
-    main()
 
 
