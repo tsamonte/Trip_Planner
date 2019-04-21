@@ -1,13 +1,3 @@
-# def isSuitableRating(rating: float):
-#     if rating < 4.0:
-#         return False
-#     return True
-
-# def isNewPlace(placeName: str, placeList: list):
-#     if placeName in placeList:
-#         return False:
-#     return True
-
 def getInitialPlace(gmaps: 'gmapsClient', readableAddress: str):
     geocode = gmaps.geocode(address=readableAddress)
     latLong = str(geocode[0]["geometry"]["location"]["lat"]) + "," + str(geocode[0]["geometry"]["location"]["lng"])
@@ -29,7 +19,7 @@ def getInitialPlace(gmaps: 'gmapsClient', readableAddress: str):
     return [place["name"], place["formatted_address"], placeLatLong, place["rating"]]
 
 
-def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 'googlemaps type', placeDict: dict):
+def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 'googlemaps type', placeNames: list):
     places = gmaps.places_nearby(location = location,
                                     # radius = 4828, # 2 miles
                                     keyword = keyword,
@@ -40,7 +30,7 @@ def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 
     isSatisfactory = False
 
     while not isSatisfactory:
-        if places[i]["name"] in placeDict or places[i]["rating"] < 4.0:
+        if places[i]["name"] in placeNames or places[i]["rating"] < 4.0:
             i += 1
         else:
             nextPlace = places[i]
