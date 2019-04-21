@@ -1,0 +1,35 @@
+#map {
+    position: absolute;
+    top: 1;
+    left: 0;
+    height: 100%;
+    width: 65%;
+}
+  /* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+#info {
+    text-align: right;
+}
+.wrap{
+    width: 100%;
+}
+
+#right{
+    width: 35%;
+    float: right;
+}
+
+p{
+    text-align: center;
+}
+
+#title{
+    font-family: "Courier New";
+    text-align: center;
+}
+.container{
+    padding-left: 39%;
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dont Trip! | Display</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/custom.css">
+    <script src="js/mapfunctions.js"></script>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyA4j2DBPo0Lkk0q1p8zIjGF4PFdTImfCFI&callback=initMap" ></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div class = "wrap">
+        <div id="map">
+        <script> 
+            var x = 33.6857;
+            var y = -117.8259;
+            var map = initMap(x,y);
+        </script>
+        </div>
+        <div id="right">
+            <div id="title">
+                <h1>Don't Trip, We Gotchu!</h1>
+            </div>
+        <p>Where we droppin?</p>
+        <div class = "container">
+            <select id="dropdown" onchange="test()">
+                <option>Choose a City</option>
+            </select>
+            <script>
+                dropDownList();
+            </script>
+        </div>
+        </div>
+    </div>
+  </body>
+</html>
