@@ -23,16 +23,14 @@ def getInitialPlace(gmaps: 'gmapsClient', readableAddress: str):
     i = 0
     isSuitableRating = False
     while not isSuitableRating:
-        if places[i]["rating"] >= 4.0:
+        if "rating" in places[i] and places[i]["rating"] >= 4.0:
             place = places[i]
             isSuitableRating = True
         else:
             i += 1
 
     placeLatLong = str(place["geometry"]["location"]["lat"]) + "," + str(place["geometry"]["location"]["lng"])
-    # neLatLong = str(place["geometry"]["viewport"]["northeast"]["lat"]) + "," + str(place["geometry"]["viewport"]["northeast"]["lng"])
-    # swLatLong = str(place["geometry"]["viewport"]["southwest"]["lat"]) + "," + str(place["geometry"]["viewport"]["southwest"]["lng"])
-    return [place["name"], placeLatLong] #, neLatLong, swLatLong, place["types"]]
+    return [place["name"], placeLatLong]
 
 
 def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 'googlemaps type', placeNames: list):
@@ -56,25 +54,23 @@ def getNearPlace(gmaps: 'gmapsClient', location: 'latLng',  keyword: str, type: 
     :return: list of necessary information for the chosen place
     """
     places = gmaps.places_nearby(location = location,
-                                    # radius = 4828, # 2 miles
+                                    radius = 4828, # 2 miles
                                     keyword = keyword,
                                     type = type,
-                                    rank_by = 'distance' # remove if we want to rank by prominence
+                                    # rank_by = 'distance' # remove if we want to rank by prominence
                                     )['results']
     i = 0
     isSatisfactory = False
 
     while not isSatisfactory:
-        if places[i]["name"] in placeNames or places[i]["rating"] < 4.0:
+        if places[i]["name"] in placeNames or "rating" not in places[i] or places[i]["rating"] < 4.0:
             i += 1
         else:
             nextPlace = places[i]
             isSatisfactory = True
 
     placeLatLong = str(nextPlace["geometry"]["location"]["lat"]) + "," + str(nextPlace["geometry"]["location"]["lng"])
-    # neLatLong = str(nextPlace["geometry"]["viewport"]["northeast"]["lat"]) + "," + str(nextPlace["geometry"]["viewport"]["northeast"]["lng"])
-    # swLatLong = str(nextPlace["geometry"]["viewport"]["southwest"]["lat"]) + "," + str(nextPlace["geometry"]["viewport"]["southwest"]["lng"])
-    return [nextPlace["name"], placeLatLong] #, neLatLong, swLatLong, nextPlace["types"]]
+    return [nextPlace["name"], placeLatLong]
 
 
 
