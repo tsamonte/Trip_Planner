@@ -9,6 +9,7 @@ from geopy.geocoders import Nominatim
 
 import tkinter
 import mapwriter
+import generatePlan
 
 
 
@@ -103,7 +104,8 @@ class DontTripUI:
         zipcode = self._zipcode_entry.get()
        
         destination = str(city+', '+state+', '+zipcode)
-        print(destination)
+        generatePlan.generatePlan(destination)
+        # print(destination)
         #destination = self._destination_entry.get()
         
         try:
