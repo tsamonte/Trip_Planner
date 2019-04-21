@@ -12,6 +12,8 @@ function initMap(x,y) {
 };
 
 var markerArray = []; // keeps track of all active markers, helps for deletion
+var startLngLat = [];
+var endLngLat = [];
 
 function addMarker(mainMap, mArray){
     var element = document.getElementById('dropdown');
@@ -24,6 +26,15 @@ function addMarker(mainMap, mArray){
         position: myLatLng,
         map: mainMap
     });
+    for(var i = 0; i < startLngLat.length; i++)
+    {
+        split_value = startLngLat[i].split(',');
+        var LatLng = {lat: parseFloat(split_value[0]), lng: parseFloat(split_value[1])};
+        var marker = new google.maps.Marker({
+            position: LatLng,
+            map: mainMap
+        });
+    }
     map.panTo(myLatLng)
     markerArray.push(marker);
 
@@ -67,7 +78,7 @@ function dropDownList(){
     }
 }
 
-function test()
+function test(map)
 {
     $.ajax({
         type: "GET",
@@ -79,10 +90,18 @@ function test()
         }
     });
 }
-
 function test2(data){
-    for(var i = 0;i < data.length; i++)
+    for(var i = 0; i < data[0]['legs'].length; i++)
     {
-        console.log(data[i]);
+        startLngLat.push(data[0]['legs'][i]['start']['latLong']);
+        endLngLat.push(data[0]['legs'][i]['end']['latLong']);
+    }
+}
+
+function printData(){
+    for(var i = 0; i < startLngLat.length; i++)
+    {
+        console.log(startLngLat[i]);
+        console.log(endLngLat[i]);
     }
 }
