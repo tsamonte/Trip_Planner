@@ -9,7 +9,7 @@ from geopy.geocoders import Nominatim
 
 import tkinter
 import mapwriter
-import itinerarywriter
+
 
 
 
